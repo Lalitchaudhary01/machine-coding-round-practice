@@ -21,7 +21,7 @@ const page = () => {
   return (
     <div className="min-h-screen">
       <div className="w-full max-w-md mx-auto bg-white p-6 rounded-xl shadow-lg">
-        <h1 className="text-2xl font-bold text-center mb-4 text-gray-800">
+        <h1 className="text-2xl font-bold text-center mb-4 text-red-800">
           Notes App
         </h1>
         <div className="flex gap-2 mb-4">

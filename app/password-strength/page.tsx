@@ -9,6 +9,7 @@ const Password = () => {
   const evaluateStrength = (pwd: string) => {
     if (pwd.length < 6) return "Weak";
     if (pwd.length < 10) return "Moderate";
+  
     return "Strong";
   };
 
@@ -27,7 +28,7 @@ const Password = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md bg-white p-6 rounded-xl shadow-lg">
+      <div className="w-full max-w-md bg-black p-6 rounded-xl shadow-lg">
         <h1 className="text-2xl font-semibold text-center mb-4">
           Password Strength Checker
         </h1>
