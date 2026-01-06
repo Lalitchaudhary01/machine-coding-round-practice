@@ -2,6 +2,8 @@
 import React from "react";
 
 const FormValidation = () => {
+  const [mode, setMode] = React.useState<"login" | "signup">("signup");
+
   const [form, setForm] = React.useState({
     name: "",
     email: "",
@@ -18,7 +20,7 @@ const FormValidation = () => {
     e.preventDefault();
     setErrors({ name: "", email: "", password: "" });
 
-    const response = await fetch("/api/form", {
+    const response = await fetch(`/api/${mode}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
@@ -27,29 +29,38 @@ const FormValidation = () => {
     const data = await response.json();
 
     if (!response.ok) {
-      setErrors({
-        name: data.error?.includes("Name") ? data.error : "",
-        email: data.error?.includes("email") ? data.error : "",
-        password: data.error?.includes("Password") ? data.error : "",
-      });
+      alert(data.error || "Something went wrong");
     } else {
-      setErrors({ name: "", email: "", password: "" });
-      alert("Form submitted successfully!");
+      alert(data.message);
+      setForm({ name: "", email: "", password: "" });
     }
   };
 
   return (
     <div>
+      {/* Toggle */}
+      <div>
+        <button onClick={() => setMode("signup")} disabled={mode === "signup"}>
+          Signup
+        </button>
+        <button onClick={() => setMode("login")} disabled={mode === "login"}>
+          Login
+        </button>
+      </div>
+
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Name:</label>
-          <input
-            type="text"
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-          />
-          {errors.name && <p>{errors.name}</p>}
-        </div>
+        {/* name only visible on signup */}
+        {mode === "signup" && (
+          <div>
+            <label>Name:</label>
+            <input
+              type="text"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+            />
+            {errors.name && <p>{errors.name}</p>}
+          </div>
+        )}
 
         <div>
           <label>Email:</label>
@@ -71,7 +82,9 @@ const FormValidation = () => {
           {errors.password && <p>{errors.password}</p>}
         </div>
 
-        <button type="submit">Submit</button>
+        <button type="submit">
+          {mode === "signup" ? "Create account" : "Login"}
+        </button>
       </form>
     </div>
   );
