@@ -16,6 +16,10 @@ const FormValidation = () => {
     password: "",
   });
 
+  // 🔐 Show / Hide password
+  const [show, setShow] = React.useState(false);
+  const toggleShow = () => setShow((prev) => !prev);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({ name: "", email: "", password: "" });
@@ -36,9 +40,15 @@ const FormValidation = () => {
     }
   };
 
+  // ✅ Disable submit when form invalid
+  const isValid =
+    mode === "signup"
+      ? form.name && form.email && form.password
+      : form.email && form.password;
+
   return (
     <div>
-      {/* Toggle */}
+      {/* Toggle mode */}
       <div>
         <button onClick={() => setMode("signup")} disabled={mode === "signup"}>
           Signup
@@ -74,15 +84,23 @@ const FormValidation = () => {
 
         <div>
           <label>Password:</label>
+
           <input
-            type="password"
+            type={show ? "text" : "password"}
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })}
           />
+
+          {/* Show / Hide button (not submit) */}
+          <button type="button" onClick={toggleShow}>
+            {show ? "Hide" : "Show"}
+          </button>
+
           {errors.password && <p>{errors.password}</p>}
         </div>
 
-        <button type="submit">
+        {/* 🚫 Disabled until valid */}
+        <button type="submit" disabled={!isValid}>
           {mode === "signup" ? "Create account" : "Login"}
         </button>
       </form>
