@@ -19,6 +19,20 @@ const FormValidation = () => {
   // 🔐 Show / Hide password
   const [show, setShow] = React.useState(false);
   const toggleShow = () => setShow((prev) => !prev);
+  //password strength
+  const getStrength = (pass: string) => {
+    if (!pass) return "";
+
+    let score = 0;
+    if (pass.length >= 8) score++;
+    if (/[A-Z]/.test(pass)) score++;
+    if (/[0-9]/.test(pass)) score++;
+    if (/[^A-Za-z0-9]/.test(pass)) score++;
+
+    if (score <= 1) return "Weak";
+    if (score === 2) return "Medium";
+    return "Strong";
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -91,10 +105,12 @@ const FormValidation = () => {
             onChange={(e) => setForm({ ...form, password: e.target.value })}
           />
 
-          {/* Show / Hide button (not submit) */}
           <button type="button" onClick={toggleShow}>
             {show ? "Hide" : "Show"}
           </button>
+
+          {/* strength text */}
+          <p>Password strength: {getStrength(form.password)}</p>
 
           {errors.password && <p>{errors.password}</p>}
         </div>
