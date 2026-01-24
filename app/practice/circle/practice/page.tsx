@@ -1,7 +1,10 @@
 import React from "react";
 
 const Practice = () => {
-  return <div>Practice</div>;
+  return <div>
+    <h1>Practice Circle Page</h1>
+    
+  </div>;
 };
 
 export default Practice;
